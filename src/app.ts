@@ -26,6 +26,10 @@ app.get("/test", async (req: Request, res: Response, next: NextFunction) => {
   return res.status(200).json({ message: "Hello, World!" });
 });
 
+// mount routes
+import storyRoute from "./routes/storyRoute";
+app.use("/story", storyRoute);
+
 // launch
 const port = Number(process.env.PORT) || 3000;
 app.listen(port, "0.0.0.0", () => {
