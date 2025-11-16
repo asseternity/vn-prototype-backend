@@ -13,7 +13,32 @@
 //     - FE sends user choices to BE; BE handles all state updates and next-node logic.
 //     - FE never predicts story flow; BE computes next chain every time.
 
-export class Player {
+// constructs
+export class Character {
+  id: string;
+  name: string;
+  portrait: string;
+  current_speaker: boolean;
+
+  constructor(id: string, name: string, portrait: string) {
+    this.id = id;
+    this.name = name;
+    this.portrait = portrait;
+    this.current_speaker = false;
+  }
+
+  lastSpokeIndex(script: Script) {
+    // scan backwards through the script
+    for (let i = script.pastLines.length - 1; i >= 0; i--) {
+      if (script.pastLines[i].speaker?.id === this.id) {
+        return i;
+      }
+    }
+    return -1; // has literally not spoken before
+  }
+}
+
+class Player {
   stat1: number;
   stat2: number;
   stat3: number;
@@ -37,20 +62,36 @@ export class Player {
   }
 }
 
+// nodes
+type Line = {
+  speaker: Character | null;
+  text: string;
+};
+
 class Node {
+  id: string;
   type: string;
 
-  constructor(type: string) {
+  constructor(id: string, type: string) {
+    this.id = id;
     this.type = type;
   }
 }
 
-export class LineNode extends Node {
-  text: string;
+class LineChainNode extends Node {
+  lines: Line[];
+  index: number;
+  endingNode: ChoiceNode | SplitNode | null;
 
-  constructor(text: string) {
-    super("line");
-    this.text = text;
+  constructor(
+    id: string,
+    lines: Line[],
+    endingNode: ChoiceNode | SplitNode | null
+  ) {
+    super(id, "line");
+    this.lines = lines;
+    this.index = 0;
+    this.endingNode = endingNode;
   }
 }
 
@@ -64,23 +105,77 @@ class ChoiceOption {
   }
 }
 
-export class ChoiceNode extends Node {
+class ChoiceNode extends Node {
   choices: ChoiceOption[];
-  constructor(choices: ChoiceOption[]) {
-    super("choice");
+  constructor(id: string, choices: ChoiceOption[]) {
+    super(id, "choice");
     this.choices = choices;
   }
 }
 
-export class SplitNode extends Node {
+class SplitNode extends Node {
   condition: string;
   true_node_id: string;
   false_node_id: string;
 
-  constructor(condition: string, true_node_id: string, false_node_id: string) {
-    super("split");
+  constructor(
+    id: string,
+    condition: string,
+    true_node_id: string,
+    false_node_id: string
+  ) {
+    super(id, "split");
     this.condition = condition;
     this.true_node_id = true_node_id;
     this.false_node_id = false_node_id;
+  }
+}
+
+class Script {
+  player: Player;
+  currentLineChainNode: LineChainNode;
+  allNodes: Node[];
+  pastLines: Line[];
+
+  constructor(startingNode: LineChainNode, allNodes: Node[]) {
+    this.player = new Player();
+    this.currentLineChainNode = startingNode;
+    this.allNodes = allNodes;
+    this.pastLines = [];
+  }
+
+  flipLine(): Line | null {
+    if (
+      this.currentLineChainNode.index >= this.currentLineChainNode.lines.length
+    ) {
+      if (!this.currentLineChainNode.endingNode) {
+        // no follow-up node, story dead-ended
+        return null;
+      } // check if it's a choice node
+      if (this.currentLineChainNode.endingNode instanceof ChoiceNode) {
+        return this.handleChoiceNode(this.currentLineChainNode.endingNode);
+      }
+
+      // check if it's a split node
+      if (this.currentLineChainNode.endingNode instanceof ChoiceNode) {
+        return this.handleSplitNode(this.currentLineChainNode.endingNode);
+      }
+    }
+
+    const line =
+      this.currentLineChainNode.lines[this.currentLineChainNode.index];
+    this.currentLineChainNode.index++;
+    return line;
+  }
+
+  handleChoiceNode(node: ChoiceNode): Line {
+    // do whatever scripting logic you want
+    // return the first line of whatever chain you pick
+    throw new Error("not implemented");
+  }
+
+  handleSplitNode(node: SplitNode): Line {
+    // check condition, pick a node, etc
+    throw new Error("not implemented");
   }
 }

@@ -15,33 +15,27 @@ const getEmptyAsyncMiddleware = async (
   }
 };
 
-const postCreateNewStory = async (
+const getTestUserData = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const username = req.body.username;
-};
-
-const postNextLineChainById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const username = req.body.username;
-};
-
-const postChoiceMade = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const username = req.body.username;
+  try {
+    let testUser = await prisma.user.findFirst();
+    if (!testUser) {
+      testUser = await prisma.user.create({
+        data: {
+          name: "test",
+        },
+      });
+    }
+    return res.status(200).json({ username: testUser.name });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export default {
   getEmptyAsyncMiddleware,
-  postCreateNewStory,
-  postNextLineChainById,
-  postChoiceMade,
+  getTestUserData,
 };

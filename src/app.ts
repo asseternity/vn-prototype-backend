@@ -28,7 +28,10 @@ app.get("/test", async (req: Request, res: Response, next: NextFunction) => {
 
 // mount routes
 import storyRoute from "./routes/storyRoute";
+import usersRoute from "./routes/usersRoute";
+
 app.use("/story", storyRoute);
+app.use("/users", usersRoute);
 
 // launch
 const port = Number(process.env.PORT) || 3000;
