@@ -1,19 +1,100 @@
-// - Player class that holds an empty array of strings and every stat as public field
-// - Script inits a this.Player instance in constructor
-// - Lines are an array of nodes: line, choice, split.
-// Script walks forward through nodes and returns a chain of sequential lines until it hits a choice or split node.
-// o choice node:
-//     - Each choice option updates player stats.
-//     - Script auto-creates a string per choice (e.g. chose_X).
-//     - Each choice leads to a new chain start index.
-// o split node:
-//     - Checks player booleans/stats.
-//     - Picks the correct next index.
-//     - Ends the current chain.
-//     - FE sends user choices to BE; BE handles all state updates and next-node logic.
-//     - FE never predicts story flow; BE computes next chain every time.
+// frontend:
+// - shows line nodes, line by line, as the player clicks
+// - shows choices
+// - sends which choice was made
 
-// constructs
+// backend:
+// - sends line nodes holds the "player" object
+// - updates the player object on the DB based on choice made
+// - sends choices
+// - sends the next line node based on choice made or split node condition
+
+/* ==========================================
+ |             LINES AND NODES              |
+ ========================================== */
+type Line = {
+  speaker: Character | null;
+  text: string;
+};
+
+class Node {
+  id: string;
+  type: string;
+
+  constructor(id: string, type: string) {
+    this.id = id;
+    this.type = type;
+  }
+}
+
+class LineChainNode extends Node {
+  lines: Line[];
+  index: number;
+  endingNode: ChoiceNode | SplitNode | null;
+
+  constructor(
+    id: string,
+    lines: Line[],
+    endingNode: ChoiceNode | SplitNode | null
+  ) {
+    super(id, "line");
+    this.lines = lines;
+    this.index = 0;
+    this.endingNode = endingNode;
+  }
+}
+
+class ChoiceOption {
+  id: string;
+  text: string;
+  node_id: string;
+  affected_stat: string;
+  affected_amount: number;
+
+  constructor(
+    id: string,
+    text: string,
+    node_id: string,
+    affected_stat: string,
+    affected_amount: number
+  ) {
+    this.id = id;
+    this.text = text;
+    this.node_id = node_id;
+    this.affected_stat = affected_stat;
+    this.affected_amount = affected_amount;
+  }
+}
+
+class ChoiceNode extends Node {
+  choices: ChoiceOption[];
+  constructor(id: string, choices: ChoiceOption[]) {
+    super(id, "choice");
+    this.choices = choices;
+  }
+}
+
+class SplitNode extends Node {
+  condition: string;
+  true_node_id: string;
+  false_node_id: string;
+
+  constructor(
+    id: string,
+    condition: string,
+    true_node_id: string,
+    false_node_id: string
+  ) {
+    super(id, "split");
+    this.condition = condition;
+    this.true_node_id = true_node_id;
+    this.false_node_id = false_node_id;
+  }
+}
+
+/* ==========================================
+ |               CONSTRUCTS                 |
+ ========================================== */
 export class Character {
   id: string;
   name: string;
@@ -62,75 +143,6 @@ class Player {
   }
 }
 
-// nodes
-type Line = {
-  speaker: Character | null;
-  text: string;
-};
-
-class Node {
-  id: string;
-  type: string;
-
-  constructor(id: string, type: string) {
-    this.id = id;
-    this.type = type;
-  }
-}
-
-class LineChainNode extends Node {
-  lines: Line[];
-  index: number;
-  endingNode: ChoiceNode | SplitNode | null;
-
-  constructor(
-    id: string,
-    lines: Line[],
-    endingNode: ChoiceNode | SplitNode | null
-  ) {
-    super(id, "line");
-    this.lines = lines;
-    this.index = 0;
-    this.endingNode = endingNode;
-  }
-}
-
-class ChoiceOption {
-  text: string;
-  node_id: string;
-
-  constructor(text: string, node_id: string) {
-    this.text = text;
-    this.node_id = node_id;
-  }
-}
-
-class ChoiceNode extends Node {
-  choices: ChoiceOption[];
-  constructor(id: string, choices: ChoiceOption[]) {
-    super(id, "choice");
-    this.choices = choices;
-  }
-}
-
-class SplitNode extends Node {
-  condition: string;
-  true_node_id: string;
-  false_node_id: string;
-
-  constructor(
-    id: string,
-    condition: string,
-    true_node_id: string,
-    false_node_id: string
-  ) {
-    super(id, "split");
-    this.condition = condition;
-    this.true_node_id = true_node_id;
-    this.false_node_id = false_node_id;
-  }
-}
-
 class Script {
   player: Player;
   currentLineChainNode: LineChainNode;
@@ -169,13 +181,18 @@ class Script {
   }
 
   handleChoiceNode(node: ChoiceNode): Line {
-    // do whatever scripting logic you want
-    // return the first line of whatever chain you pick
+    // apply stat changes to the player instance within script
+    // add choice id to player.choices
+    // assign the LineChainNode to script
+    // return first Line
     throw new Error("not implemented");
   }
 
   handleSplitNode(node: SplitNode): Line {
-    // check condition, pick a node, etc
+    // check condition
+    // pick a LineChainNode
+    // assign it to script
+    // return first Line
     throw new Error("not implemented");
   }
 }
