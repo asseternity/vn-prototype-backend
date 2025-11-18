@@ -3,9 +3,8 @@ import storyController from "../controllers/storyController";
 
 const storyRoute = express.Router();
 
-storyRoute.get("/empty", storyController.getEmptyAsyncMiddleware);
-storyRoute.post("/new_game", storyController.postCreateNewStory);
-storyRoute.post("/get_line", storyController.postNextLineChainById);
-storyRoute.post("/choice_made", storyController.postChoiceMade);
+storyRoute.post("/line", storyController.postSendLineChainNode);
+storyRoute.post("/choice", storyController.postChoice);
+storyRoute.post("/split", storyController.postSplit);
 
 export default storyRoute;

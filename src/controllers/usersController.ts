@@ -3,18 +3,6 @@ import { Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-const getEmptyAsyncMiddleware = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    return res.status(200).json({ message: "empty" });
-  } catch (err) {
-    next(err);
-  }
-};
-
 const getTestUserData = async (
   req: Request,
   res: Response,
@@ -25,7 +13,10 @@ const getTestUserData = async (
     if (!testUser) {
       testUser = await prisma.user.create({
         data: {
-          name: "test",
+          player_name: "test",
+          username: "test",
+          email: "test@test.com",
+          password: "123456",
         },
       });
     }
@@ -36,6 +27,5 @@ const getTestUserData = async (
 };
 
 export default {
-  getEmptyAsyncMiddleware,
   getTestUserData,
 };

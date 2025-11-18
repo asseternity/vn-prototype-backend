@@ -21,11 +21,6 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// test route
-app.get("/test", async (req: Request, res: Response, next: NextFunction) => {
-  return res.status(200).json({ message: "Hello, World!" });
-});
-
 // mount routes
 import storyRoute from "./routes/storyRoute";
 import usersRoute from "./routes/usersRoute";
