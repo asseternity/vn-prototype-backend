@@ -1,17 +1,5 @@
-// frontend:
-// - shows line nodes, line by line, as the player clicks
-// - shows choices
-// - sends which choice was made
-
-// backend:
-// - sends line nodes
-// - holds the player object in DB
-// - updates the player object on the DB based on choice made
-// - sends choices
-// - sends the next line node based on choice made or split node condition
-
 export type Line = {
-  speakerId: string;
+  role: Role;
   text: string;
 };
 
@@ -46,8 +34,16 @@ export type SplitNode = {
 
 export type Node = LineChainNode | ChoiceNode | SplitNode;
 
-export type Character = {
+export type Role = {
   id: string;
-  name: string;
-  portrait: string;
 };
+
+export class Event {
+  id: string;
+  nodes_by_id: Record<string, Node>;
+
+  constructor(id: string, nodes_by_id: Record<string, Node>) {
+    this.id = id;
+    this.nodes_by_id = nodes_by_id;
+  }
+}

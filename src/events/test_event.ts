@@ -4,34 +4,27 @@ import {
   ChoiceNode,
   SplitNode,
   Node,
-  Character,
-} from "./master_types";
+  Role,
+} from "../utils/master_types";
 
-export const characters: Character[] = [
+export const characters: Role[] = [
+  {
+    id: "narrator",
+  },
   {
     id: "player",
-    name: "You",
-    portrait: "portrait_test_1.png",
   },
   {
-    id: "jordan",
-    name: "Jordan",
-    portrait: "portrait_test_2.png",
+    id: "1",
   },
   {
-    id: "riley",
-    name: "Riley",
-    portrait: "portrait_test_3.png",
+    id: "2",
   },
   {
-    id: "blake",
-    name: "Blake",
-    portrait: "portrait_test_4.png",
+    id: "3",
   },
   {
-    id: "patel",
-    name: "Ms. Patel",
-    portrait: "portrait_test_5.png",
+    id: "4",
   },
 ];
 
@@ -40,23 +33,23 @@ const introHallway: LineChainNode = {
   type: "line",
   lines: [
     {
-      speakerId: "narrator",
+      role: characters[1],
       text: "First day back at Eastbridge High. Same chipped lockers, same flickering lights, same feeling in your stomach.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "You look like you’re about to fake your own death to avoid homeroom.",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "If I disappear, erase my search history.",
     },
     {
-      speakerId: "jordan",
+      role: characters[2],
       text: "Permission denied. Anyway, lunch plans? You actually deciding who you wanna be this year or just winging it again?",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "The bell shrieks. Crowds surge toward the cafeteria like it’s a battlefield.",
     },
   ],
@@ -96,19 +89,19 @@ const lunchWithJordan: LineChainNode = {
   type: "line",
   lines: [
     {
-      speakerId: "jordan",
+      role: characters[2],
       text: "Okay, so Ms. Patel loves trick questions. If the answer looks easy, it’s probably a trap.",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "So like people, basically.",
     },
     {
-      speakerId: "jordan",
+      role: characters[2],
       text: "Exactly. Also, rumor is Riley is doing extra credit for her. Guess you’ll have competition.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "You feel your brain slowly waking up. Maybe you won’t tank this year after all.",
     },
   ],
@@ -120,23 +113,23 @@ const lunchWithRiley: LineChainNode = {
   type: "line",
   lines: [
     {
-      speakerId: "riley",
+      role: characters[3],
       text: "Hey, over here! We saved you a spot.",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "You… saved me a spot?",
     },
     {
-      speakerId: "riley",
+      role: characters[3],
       text: "Relax, it’s not a blood pact. Yet. So, are you ready for Ms. Patel? She terrifies half the grade.",
     },
     {
-      speakerId: "blake",
+      role: characters[4],
       text: "If you mess up the group presentation, we’re not going down with you. Just saying.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "You laugh it off, but the pressure creeps in under your skin.",
     },
   ],
@@ -148,19 +141,19 @@ const lunchAlone: LineChainNode = {
   type: "line",
   lines: [
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "You take the empty table by the vending machine, where the light flickers like it’s judging you.",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "At least my phone can’t be disappointed in me. Yet.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "You scroll through endless feeds while laughter erupts from the other tables. Notifications: zero. Vibes: also zero.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "Somewhere across the room, Jordan and Riley are both mid-conversation with other people.",
     },
   ],
@@ -182,31 +175,31 @@ const classPresentationConfident: LineChainNode = {
   type: "line",
   lines: [
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "Ms. Patel’s classroom smells like dry-erase markers and stress.",
     },
     {
-      speakerId: "patel",
+      role: characters[5],
       text: "Group three, you’re up.",
     },
     {
-      speakerId: "riley",
+      role: characters[3],
       text: "Ready?",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "I was born ready. Or at least, lunch-ready.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "You start speaking. The words actually line up with the thoughts in your head for once.",
     },
     {
-      speakerId: "patel",
+      role: characters[5],
       text: "Solid structure. You clearly prepared. I expect to see this level of effort all semester.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "You catch Riley’s tiny smile and Jordan’s thumbs-up from the back row.",
     },
   ],
@@ -218,35 +211,35 @@ const classPresentationPanic: LineChainNode = {
   type: "line",
   lines: [
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "Ms. Patel’s classroom feels ten degrees hotter than the hallway.",
     },
     {
-      speakerId: "patel",
+      role: characters[5],
       text: "Group three, let’s hear it.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "Your brain decides that now is the perfect time to blue-screen.",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "So… uh… our project is…",
     },
     {
-      speakerId: "blake",
+      role: characters[4],
       text: "(whispering) Seriously?",
     },
     {
-      speakerId: "riley",
+      role: characters[3],
       text: "We analyzed how social expectations shape identity…",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "Riley swoops in, covering the gaps while you stare at the floor and pretend it’s part of the performance.",
     },
     {
-      speakerId: "patel",
+      role: characters[5],
       text: "This would have been stronger with even basic preparation from everyone.",
     },
   ],
@@ -286,31 +279,31 @@ const corridorWithRiley: LineChainNode = {
   type: "line",
   lines: [
     {
-      speakerId: "player",
+      role: characters[1],
       text: "Hey, about the presentation… thanks for saving it from spontaneous combustion.",
     },
     {
-      speakerId: "riley",
+      role: characters[3],
       text: "You were nervous. That’s not illegal. But you’re smarter than you acted back there.",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "You barely know me.",
     },
     {
-      speakerId: "riley",
+      role: characters[3],
       text: "I know you stayed awake in class last week. That already sets you apart.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "There’s a pause. Not awkward, just loaded.",
     },
     {
-      speakerId: "riley",
+      role: characters[3],
       text: "Ms. Patel’s doing another project next month. We could partner again, if you, y’know, actually prep this time.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "Your chest feels annoyingly light. This could actually be something.",
     },
   ],
@@ -322,31 +315,31 @@ const lockerConfrontation: LineChainNode = {
   type: "line",
   lines: [
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "Blake slams their locker shut so hard it echoes.",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "You wanna keep glaring or actually say what your problem is?",
     },
     {
-      speakerId: "blake",
+      role: characters[4],
       text: "My problem is I’m not trying to fail because you froze up.",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "I messed up. You could’ve helped instead of making it worse.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "Blake looks away, jaw tight.",
     },
     {
-      speakerId: "blake",
+      role: characters[4],
       text: "Whatever. Next time, just don’t fold.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "You walk away shaking, but weirdly lighter. Maybe power isn’t about winning, just not shrinking.",
     },
   ],
@@ -358,35 +351,35 @@ const walkHomeWithJordan: LineChainNode = {
   type: "line",
   lines: [
     {
-      speakerId: "jordan",
+      role: characters[2],
       text: "So, how bad was the academic crime scene?",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "Could’ve been worse. Nobody cried. Out loud.",
     },
     {
-      speakerId: "jordan",
+      role: characters[2],
       text: "Progress. Tiny, tragic progress.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "You fall into step together, sneakers hitting the cracked sidewalk in sync.",
     },
     {
-      speakerId: "jordan",
+      role: characters[2],
       text: "You don’t have to impress anyone, you know. You just have to not give up on yourself.",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "Since when did you become emotionally competent?",
     },
     {
-      speakerId: "jordan",
+      role: characters[2],
       text: "Don’t spread it around. I’ve got a reputation.",
     },
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "The day ends softer than it started. Maybe tomorrow won’t be a disaster.",
     },
   ],
@@ -406,11 +399,11 @@ const lateNightHopeful: LineChainNode = {
   type: "line",
   lines: [
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "Lying in bed, you replay the day. It wasn’t perfect, but it wasn’t hopeless either.",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "Maybe this year doesn’t have to be a repeat.",
     },
   ],
@@ -422,19 +415,20 @@ const lateNightDreading: LineChainNode = {
   type: "line",
   lines: [
     {
-      speakerId: "narrator",
+      role: characters[0],
       text: "The ceiling stares back at you, glowing faintly with streetlight shadows.",
     },
     {
-      speakerId: "player",
+      role: characters[1],
       text: "New year, same chaos.",
     },
   ],
   endingNodeId: null,
 };
 
-// Export a lookup map
-export const nodesById: Record<string, Node> = {
+import { Event } from "../utils/master_types";
+
+const test_event_nodes_by_id: Record<string, Node> = {
   [introHallway.id]: introHallway,
   [choiceLunchTable.id]: choiceLunchTable,
   [lunchWithJordan.id]: lunchWithJordan,
@@ -451,3 +445,5 @@ export const nodesById: Record<string, Node> = {
   [lateNightHopeful.id]: lateNightHopeful,
   [lateNightDreading.id]: lateNightDreading,
 };
+
+export const test_event = new Event("test_event", test_event_nodes_by_id);

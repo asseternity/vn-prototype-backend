@@ -10,14 +10,10 @@ datasource db {
 model User {
   id                      Int       @id @default(autoincrement())
   username                String    @unique
-  password                String    @unique
+  password                String    
   email                   String    @unique
-  player_name             String
-  smarts                  Int       @default(0)
-  charm                   Int       @default(0)
-  power                   Int       @default(0)
-  heartvsmind             Int       @default(50)
-  optimismvspessimism     Int       @default(50)
-  forcefulvsaccomodating  Int       @default(50)
+  serializedSaveGame1     String    
+  serializedSaveGame2     String    
+  serializedSaveGame3     String    
   createdAt               DateTime  @default(now())
 }
