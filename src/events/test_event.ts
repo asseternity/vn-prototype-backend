@@ -29,7 +29,7 @@ export const characters: Role[] = [
 ];
 
 const introHallway: LineChainNode = {
-  id: "intro-hallway",
+  id: "intro",
   type: "line",
   lines: [
     {
