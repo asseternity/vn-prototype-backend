@@ -19,7 +19,7 @@ const getTestUserData = async (
         },
       });
     }
-    return res.status(200).json({ username: testUser.name });
+    return res.status(200).json({ username: testUser.username });
   } catch (err) {
     next(err);
   }
