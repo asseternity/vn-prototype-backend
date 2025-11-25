@@ -13,7 +13,6 @@ const getTestUserData = async (
     if (!testUser) {
       testUser = await prisma.user.create({
         data: {
-          player_name: "test",
           username: "test",
           email: "test@test.com",
           password: "123456",

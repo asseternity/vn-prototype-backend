@@ -12,8 +12,8 @@ model User {
   username                String    @unique
   password                String    
   email                   String    @unique
-  serializedSaveGame1     String    
-  serializedSaveGame2     String    
-  serializedSaveGame3     String    
+  serializedSaveGame1     String    @default("")
+  serializedSaveGame2     String    @default("")
+  serializedSaveGame3     String    @default("")
   createdAt               DateTime  @default(now())
 }
